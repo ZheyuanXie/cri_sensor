@@ -18,14 +18,17 @@ ros::Publisher pub2("sensor2", &int16_msg);
 ros::Publisher pub3("sensor3", &int16_msg);
 
 // Timing
-Ticker time_up;
+Ticker sensor_tick;
+Ticker ros_tick;
 
-void task() {
+void read_sensor() {
     // read sensors
     sensor1.Poll();
     sensor2.Poll();
     sensor3.Poll();
-    // publish msg to ROS
+}
+
+void send_ros_msg() {
     int16_msg.data = sensor1.Get_Angel();
     pub1.publish(&int16_msg);
     int16_msg.data = sensor2.Get_Angel();
@@ -43,7 +46,8 @@ int main() {
     nh.advertise(pub3);
     spi.format(8,1);
     spi.frequency(500000);
-    time_up.attach(&task, 0.01);
+    sensor_tick.attach(&read_sensor, 0.005);
+    ros_tick.attach(&send_ros_msg, 0.01);
 
     while(1) {
         wait(1);
