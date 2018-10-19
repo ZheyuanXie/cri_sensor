@@ -4,10 +4,10 @@
 #include <std_msgs/Int16.h>
 
 // Sensor
-SPI spi(D11, D12, D13);
-MLX90363 sensor1(D10, &spi);
-MLX90363 sensor2(D9, &spi);
-MLX90363 sensor3(D8, &spi);
+SPI spi(A6, A5, A4);
+MLX90363 sensor1(D7, &spi);    //PF0
+MLX90363 sensor2(D6, &spi);     //PB1
+MLX90363 sensor3(A0, &spi);     //PA0
 int16_t angle1, angle2, angle3;
 
 // ROS
